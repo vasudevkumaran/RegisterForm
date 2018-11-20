@@ -23,6 +23,15 @@ public class LoginActivity extends AppCompatActivity {
         userNameEdit = findViewById(R.id.uname_ed);
         passwordEdit = findViewById(R.id.pass_ed);
 
+        if (App.getStatus(this)){
+            //true if already logged in
+            Intent intent = new Intent(this,IndexActivity.class);
+            startActivity(intent);
+            finish();
+        }else{
+            //continue to load login Screen
+        }
+
     }
 
     @Override
@@ -53,11 +62,15 @@ public class LoginActivity extends AppCompatActivity {
         if (userNameEdit.getText().toString().equals("admin")
                 && passwordEdit.getText().toString().equals("admin")){
             //login success
+            App.displayToast(this,"Logged in Successfully");
+            App.saveStatus(this,true);
+            Intent intent = new Intent(this,IndexActivity.class);
+            startActivity(intent);
+            finish();
         }else{
             //login failed
-            Toast.makeText(this,
-                    "Login Failed",
-                    Toast.LENGTH_LONG).show();
+            App.saveStatus(this,false);
+            App.displayToast(this,"Login Failed");
         }
     }
 
